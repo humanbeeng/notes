@@ -4,24 +4,32 @@
 - parentColumn refers to the actual source column, entityColumn holds reference to the values of parentColumn, but not the actual data itself. 
 - We need to define the another member which holds the result of the relation itself. 
 
+
+Example scenario :
+A Owner can have multiple dogs and we need to retrieve list of all dogs of a particular Owner.
+
+Consider that we have Owner and Dogs class: 
 ```kotlin
-data class SchoolWithStudents(
-	@Embedded val school : School,
-	@Relation(
-		parentColumn : "schoolName",
-		entityColumn : "schoolName,
-	)
-	val students : List<Student>
+
+@Entity
+data class Owner(
+	@PrimaryKey ownerId : Long, 
+	val name : String
 )
+
 ```
 
 
-### Inside Dao
 ```kotlin
 
-@Transaction -> Thread safety - Atomicity of the query
-@Query("SELECT * FROM school WHERE schoolName = :schoolName")
-suspend fun getSchoolWithStudents(schoolName : String)  : List<Student>
-
+@Entity
+data class Dog(
+	@PrimaryKey dogId : Long,
+	val dogOwnerId : Long, 
+	val name : String,
+	val breed : String
+)
 
 ```
+
+
