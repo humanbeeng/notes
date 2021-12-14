@@ -5,7 +5,7 @@
 - We need to define the another member which holds the result of the relation itself. 
 
 
-Example scenario :
+**Example scenario** :
 A Owner can have multiple dogs and we need to retrieve list of all dogs of a particular Owner.
 
 Consider that we have Owner and Dogs class: 
@@ -33,3 +33,22 @@ data class Dog(
 ```
 
 
+> Goal : To display list of Owners with their Dogs
+This relation can be defined as `OwnerWithDogs`
+
+```kotlin
+
+data class OwnerWithDogs(
+	@Embedded val owner : Owner,
+
+	@Relation(parentColumn = "ownerId", entityColumn = "dogOwnerId")
+	val dogs : List<Dog>
+)
+
+```
+
+### Dao
+
+@Transaction
+@Query("SELECT * FROM Owner")
+suspend fun getDogsAndOwners() : List<OwnerWithDogs>
